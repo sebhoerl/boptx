@@ -14,7 +14,7 @@ following structure:
 
 It has four different modes (A, B, C) with the following utility functions:
 
-<img src="figures/utilities.png" height="210" />
+<img src="figures/utilities.png" height="100" />
 
 The model has four main parameters: the alternative-specific constants for
 the three alternatives, and the marginal utility of travel time for the
@@ -25,7 +25,7 @@ models a mode with limited capacity (for instance car traffic that is limited
 by the infrastructure or a public transport network with limited throughput). The
 travel time is defined as:
 
-<img src="figures/traveltime.png" height="70" />
+<img src="figures/traveltime.png" height="60" />
 
 Two parameters are included in the travel time model: the capacity of the system
 and the "free flow" travel time. With increasing mode share, travel time increases
@@ -34,12 +34,12 @@ and the mode becomes less attractive.
 The model performs a simulation starting at an initial mode share vector of `[0.33, 0.33, 0.33]`
 if not specified otherwise. The simulation then calculates the travel time given the first mode shares, and then calculates updated mode shares for all modes according to the MNL as
 
-<img src="figures/vector.png" height="70" />
+<img src="figures/vector.png" height="40" />
 
 Updating the state directly this way, the procedure would
 lead to heavy oscillatory behavior for many parameter combinations. Hence, we use averaging to update the state:
 
-<img src="figures/updating.png" height="70" />
+<img src="figures/updating.png" height="40" />
 
 The blending factor *ξ* defines how strongly the previous state will be updated
 towards the theoretic new equilibrium. However, when performing the calculation
@@ -68,7 +68,7 @@ we want to reconstruct during the calibration: `[0.4 , 0.44, 0.16]`.
 
 In the calibration, we keep most parameters fixed and treat the following parameters as unknown:
 
-![Parameters](figures/parameters.png)
+<img src="figures/parameters.png" height="40" />
 
 The goal of the calibration is to find values that reproduce the reference shares.
 
