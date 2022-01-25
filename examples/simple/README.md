@@ -14,7 +14,7 @@ following structure:
 
 It has four different modes (A, B, C) with the following utility functions:
 
-![Utility functions](figures/utilities.png | width=100)
+![Utility functions](figures/utilities.png | width=20)
 
 The model has four main parameters: the alternative-specific constants for
 the three alternatives, and the marginal utility of travel time for the
