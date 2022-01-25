@@ -46,7 +46,7 @@ model parameters and see the output.
 
 The following figure shows an example of the output:
 
-![Calibration](figures/calibration.png)
+![States](figures/states.png)
 
 ## Calibration problem
 

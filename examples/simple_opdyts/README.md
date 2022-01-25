@@ -28,7 +28,7 @@ You can use [Model.ipynb](Model.ipynb) to play around with running the model
 partially. In the notebook, four chunks of 100 iterations are run and then
 plotted:
 
-TODO
+![States](figures/states.png)
 
 ## Calibration problem
 
@@ -111,7 +111,7 @@ is why a much higher number is chosen than in the introductory example.
 
 The notebook produces the following output:
 
-TODO
+![Calibration](figures/calibration.png)
 
 The top row shows the same plot as in the introductory example. On the left, a
 clear pattern of an opdyts calibration can be see: As simulations are advanced
