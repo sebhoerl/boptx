@@ -44,7 +44,9 @@ more than a fixed threshold TODO from the previous state.
 The notebook [Model.ipynb](Model.ipynb) can be used to play around wit the
 model parameters and see the output.
 
-TODO Figure figures/states.png shows an example of the output.
+The following figure shows an example of the output:
+
+![Calibration](figures/calibration.png)
 
 ## Calibration problem
 
@@ -198,7 +200,7 @@ algorithm. Here, we simply track the tested parameter `values` and the resulting
 
 In the notebook, we produce a plot of these outputs as shown in the next Figure.
 
-TODO
+![Calibration](figures/calibration.png)
 
 We can see how, initially, the algorithm tries strongly varying parameter values
 to get an idea of the location of the optimal value. After, it exploits more
