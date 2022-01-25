@@ -2,8 +2,8 @@
 
 This example is based on the [introductory example](../simple), but uses the
 odpyts search acceleration approach by [Flötteröd (2017)](https://www.sciencedirect.com/science/article/pii/S0191261516302466). The basic logic of using opdyts in
-combination with general evolutionary search algorithm has been explained in
-TODO. The model is the same as in the introdutory example.
+combination with general evolutionary search algorithm has been explained by
+[Hörl (2022)](https://www.researchgate.net/publication/358106366_Exploring_accelerated_evolutionary_parameter_search_for_iterative_large-scale_transport_simulations_in_a_new_calibration_testbed). The model is the same as in the introdutory example.
 
 ## Basic idea
 
