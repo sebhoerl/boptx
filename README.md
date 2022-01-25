@@ -32,7 +32,6 @@ to be done:
 
 - [ ] We already have unit tests, but not yet in the repository. Put them in.
 - [ ] We already have code for Bayesian Optimization. Cleanup and put it in.
-- [ ] Remove TODOs in simple examples
 - [ ] Write the example for eqasim Paris as desribed by TODO
 - [ ] Write the example for a standard MATSim simulation
 - [ ] Write the example for a standard SUMO simulation
