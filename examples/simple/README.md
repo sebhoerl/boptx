@@ -10,7 +10,11 @@ The model can be found in [model.py](model.py) and is described by the
 `ModeShareModel` class. It represents a multinomial logit (MNL) model of the
 following structure:
 
-TODO
+![Multinomial Logit Model](figures/mnl.png)
+
+It has four different modes (A, B, C) with the following utility functions:
+
+![Utility functions](figures/utilities.png)
 
 The model has four main parameters: the alternative-specific constants for
 the three alternatives, and the marginal utility of travel time for the
@@ -21,17 +25,23 @@ models a mode with limited capacity (for instance car traffic that is limited
 by the infrastructure or a public transport network with limited throughput). The
 travel time is defined as:
 
-TODO
+![Travel Time](figures/traveltime.png)
 
 Two parameters are included in the travel time model: the capacity of the system
 and the "free flow" travel time. With increasing mode share, travel time increases
 and the mode becomes less attractive.
 
 The model performs a simulation starting at an initial mode share vector of `[0.33, 0.33, 0.33]`
-if not specified otherwise. The simulation then calculates the travel time given the first mode shares, and then calculates updated mode shares for all modes according to the MNL. This would
+if not specified otherwise. The simulation then calculates the travel time given the first mode shares, and then calculates updated mode shares for all modes according to the MNL as
+
+![State vector](figures/vector.png)
+
+Updating the state directly this way, the procedure would
 lead to heavy oscillatory behavior for many parameter combinations. Hence, we use averaging to update the state:
 
-The blending factor TODO defines how strongly the previous state will be updated
+![Update equation](figures/updating.png)
+
+The blending factor *ξ* defines how strongly the previous state will be updated
 towards the theoretic new equilibrium. However, when performing the calculation
 iteratively, the state slowly approaches the final equilibrium.
 
@@ -39,7 +49,7 @@ The output of the simulator is the state over all simulated iterations (e.g. if
 1000 iterations were simulated, one will have three time series for the three
 alternatives of 1000 values). The number of iterations can either be fixed, or
 (be default) the simulation is stopped if all three alternatives do not vary for
-more than a fixed threshold TODO from the previous state.
+more than a fixed threshold *T* from the previous state.
 
 The notebook [Model.ipynb](Model.ipynb) can be used to play around wit the
 model parameters and see the output.
@@ -56,7 +66,10 @@ we choose the following configuration of parameters:
 This combination of parameters approximately leads to the reference shares that
 we want to reconstruct during the calibration: `[0.4 , 0.44, 0.16]`.
 
-In the calibration, we keep TODO fixed and treat the parameters TODO as unknown.
+In the calibration, we keep most parameters fixed and treat the following parameters as unknown:
+
+![Parameters](figures/parameters.png)
+
 The goal of the calibration is to find values that reproduce the reference shares.
 
 ## Wrapping the simulator
@@ -157,7 +170,7 @@ Next, the notebook defines the algorithm to use:
 algorithm = CMAES1P1Algorithm(problem)
 ```
 
-Here, we use the CMA-(1,1)-ES algorithm by TODO. After, we create a calibration
+Here, we use the CMA-(1,1)-ES algorithm by [Igel et al. (2006)](http://portal.acm.org/citation.cfm?doid=1143997.1144082). After, we create a calibration
 loop that puts all ingredients together:
 
 ```python
