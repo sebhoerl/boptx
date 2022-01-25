@@ -25,7 +25,7 @@ To get started with the framework, please have a look at our instructions on how
 
 ## Things to do
 
->>> Attention! The first use cases of the framework have indicated a couple of improvements that can be applied to the API. These will be implemented over the coming months. In case you're already using the framework, make sure to base your developments on a fixed commit to avoid any inconsistencies along the way.
+> Attention! The first use cases of the framework have indicated a couple of improvements that can be applied to the API. These will be implemented over the coming months. In case you're already using the framework, make sure to base your developments on a fixed commit to avoid any inconsistencies along the way.
 
 This repository has just been put online. Here is a list of things that still need
 to be done:
