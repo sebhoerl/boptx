@@ -1,0 +1,13 @@
+name: boptx
+channels:
+  - conda
+dependencies:
+  - python=3.9.9
+  - pandas=1.3.2
+  - conda-build=3.21.4
+  - deepmerge=0.3.0
+  - geopandas=0.9.0
+  - numpy=1.21.2
+  - scipy=1.7.1
+  - jupyter=1.0.0
+  - pytest=6.2.5
