@@ -10,7 +10,7 @@ The model can be found in [model.py](model.py) and is described by the
 `ModeShareModel` class. It represents a multinomial logit (MNL) model of the
 following structure:
 
-![Multinomial Logit Model](figures/mnl.png)
+<img src="figures/mnl.png" height="20" />
 
 It has four different modes (A, B, C) with the following utility functions:
 
