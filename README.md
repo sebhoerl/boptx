@@ -1,4 +1,4 @@
-# Calibration framework for agent-based transport simulation
+# boptx
 
 This repository contains a framework for calibration large-scale agent-based
 transport simulations. It is mainly developed to calibrate simulations from the
