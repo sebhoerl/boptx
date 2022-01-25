@@ -14,7 +14,7 @@ following structure:
 
 It has four different modes (A, B, C) with the following utility functions:
 
-![Utility functions](figures/utilities.png | width=20)
+<img src="figures/utilities.png" height="210" />
 
 The model has four main parameters: the alternative-specific constants for
 the three alternatives, and the marginal utility of travel time for the
@@ -25,7 +25,7 @@ models a mode with limited capacity (for instance car traffic that is limited
 by the infrastructure or a public transport network with limited throughput). The
 travel time is defined as:
 
-![Travel Time](figures/traveltime.png)
+<img src="figures/traveltime.png" height="70" />
 
 Two parameters are included in the travel time model: the capacity of the system
 and the "free flow" travel time. With increasing mode share, travel time increases
@@ -34,12 +34,12 @@ and the mode becomes less attractive.
 The model performs a simulation starting at an initial mode share vector of `[0.33, 0.33, 0.33]`
 if not specified otherwise. The simulation then calculates the travel time given the first mode shares, and then calculates updated mode shares for all modes according to the MNL as
 
-![State vector](figures/vector.png)
+<img src="figures/vector.png" height="70" />
 
 Updating the state directly this way, the procedure would
 lead to heavy oscillatory behavior for many parameter combinations. Hence, we use averaging to update the state:
 
-![Update equation](figures/updating.png)
+<img src="figures/updating.png" height="70" />
 
 The blending factor *ξ* defines how strongly the previous state will be updated
 towards the theoretic new equilibrium. However, when performing the calculation
