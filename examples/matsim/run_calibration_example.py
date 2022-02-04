@@ -39,7 +39,7 @@ evaluator = MATSimEvaluator(
         config = {
             "global.numberOfThreads": 8,
             "qsim.numberOfThreads": 8,
-            "strategy.fractionOfIterationsToDisableInnovation 9999.0"
+            "strategy.fractionOfIterationsToDisableInnovation": 9999.0
         }
     )
 )
