@@ -55,9 +55,12 @@ class ModeShareEvaluator(BaseEvaluator):
 
         initial_state = None
 
-        if "restart" in information:
-            # Get the last state of the simulation we should restart
-            initial_state = self.results[information["restart"]][-1]
+        if "opdyts" in information:
+            opdyts = information["opdyts"]
+
+            if "restart" in opdyts:
+                # Get the last state of the simulation we should restart
+                initial_state = self.results[opdyts["restart"]][-1]
 
         self.results[identifier] = model.run(
             iterations = self.transition_size,

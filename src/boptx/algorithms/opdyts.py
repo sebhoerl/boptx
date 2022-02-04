@@ -88,7 +88,9 @@ class OpdytsAlgorithm(Algorithm):
         if self.base_identifier is None:
             logger.debug("Initilizing Opdyts with one simulation run")
             initial_values = self._require_initial_values(self.problem.get_parameters())
-            self.base_identifier = evaluator.submit_one(initial_values, { "type": OpdytsEvaluation.INITIAL })
+            self.base_identifier = evaluator.submit_one(initial_values, dict(opdyts = dict(
+                type = OpdytsEvaluation.INITIAL
+            )))
 
         base_evaluation = evaluator.get_one(self.base_identifier)
 
@@ -115,11 +117,11 @@ class OpdytsAlgorithm(Algorithm):
         transitions = np.ones((candidates,))
 
         identifiers = [
-            evaluator.submit_one(values[k], self._combine({
-                "type": OpdytsEvaluation.CANDIDATE,
-                "candidate": k, "opdyts_iteration": self.iteration,
-                "restart": self.base_identifier
-            }, information[k])) for k in range(candidates)
+            evaluator.submit_one(values[k], self._combine(dict(opdyts = dict(
+                type = OpdytsEvaluation.CANDIDATE,
+                candidate = k, iteration = self.iteration,
+                restart = self.base_identifier
+            )), information[k])) for k in range(candidates)
         ]
 
         for k in range(candidates):
@@ -163,16 +165,14 @@ class OpdytsAlgorithm(Algorithm):
             transitions[k] += 1
             logger.debug("Transitioning candidate {} (transition {})".format(k, transitions[k]))
 
-            identifier = evaluator.submit_one(values[k], self._combine({
-                # Information
-                "type": OpdytsEvaluation.TRANSITION,
-                "candidate": k, "opdyts_iteration": self.iteration,
-                "transient_performance": transient_performance,
-                "equilibrium_gap": equilibrium_gap,
-                "uniformity_gap": uniformity_gap,
-                # Instructions
-                "restart": identifiers[k]
-            }, information[k]))
+            identifier = evaluator.submit_one(values[k], self._combine(dict(opdyts = dict(
+                type = OpdytsEvaluation.TRANSITION,
+                candidate = k, iteration = self.iteration,
+                transient_performance = transient_performance,
+                equilibrium_gap = equilibrium_gap,
+                uniformity_gap = uniformity_gap,
+                restart = identifiers[k]
+            )), information[k]))
 
             # Get information and clean up
             evaluation = evaluator.get_one(identifier)
