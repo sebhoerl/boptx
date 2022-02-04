@@ -304,7 +304,7 @@ class MATSimEvaluator(BaseEvaluator):
                     has_finished = True
 
                     if not self.termination is None:
-                        output_path = "%s/%s/output".format(self.working_directory, identifier)
+                        output_path = "{}/{}/output".format(self.working_directory, identifier)
                         self.termination.update(identifier, output_path)
 
                         information = self.termination.get_information(identifier)
