@@ -382,6 +382,8 @@ class ModeShareTracker(TerminationTracker):
 
     def update(self, identifier, output_path):
         candidates = glob.glob("{}/*modestats.txt".format(output_path))
+        candidates = [c for c in candidates if not "ph_" in c]
+        candidates = [c for c in candidates if not "pkm_" in c]
         assert len(candidates) == 1
 
         df_new = pd.read_csv(candidates[0], sep = "\t")
