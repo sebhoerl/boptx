@@ -9,7 +9,7 @@ import multiprocessing
 import pandas as pd
 import numpy as np
 import glob
-import json
+import json, pickle
 
 import logging
 logger = logging.getLogger(__name__)
@@ -376,58 +376,104 @@ class ModeShareTracker(TerminationTracker):
         self.modes = modes
 
         self.trajectories = {}
+        self.terminated = {}
 
     def start(self, identifier, values, information):
         self.trajectories[identifier] = None
+        self.terminated[identifier] = False
 
     def update(self, identifier, output_path):
+        # Read mode shares
         candidates = glob.glob("{}/*modestats.txt".format(output_path))
         candidates = [c for c in candidates if not "ph_" in c]
         candidates = [c for c in candidates if not "pkm_" in c]
         assert len(candidates) == 1
 
+        # Update trajectories
         df_new = pd.read_csv(candidates[0], sep = "\t")
         df_trajectory = self.trajectories[identifier]
 
         if df_trajectory is None:
-            self.trajectories[identifier] = df_new
+            df_trajectory = df_new
         else:
-            self.trajectories[identifier] = pd.concat([
+            df_trajectory = pd.concat([
                 df_trajectory.iloc[:-1], df_new
             ])
 
-    def has_terminated(self, identifier):
-        df_trajectory = self.trajectories[identifier]
-        if df_trajectory is None: return False
+        self.trajectories[identifier] = df_trajectory
 
+        # Analyze trajectories
+        information = self.get_information(identifier)
+        self.terminated[identifier] = information["terminated"]
+
+        # Save temporary information
+        with open("{}/boptx_termination.p".format(output_path), "wb+") as f:
+            pickle.dump(information, f)
+
+        # And a CSV for checking the current progress
+        output = {}
+        output["iteration"] = np.arange(len(information["all"]))
+
+        for mode in self.modes:
+            output["{}_y".format(mode)] = information["modes"][mode]["y"]
+            output["{}_s".format(mode)] = information["modes"][mode]["s"]
+            output["{}_d".format(mode)] = information["modes"][mode]["d"]
+            output["{}_dm".format(mode)] = information["modes"][mode]["dm"]
+            output["{}_dp".format(mode)] = information["modes"][mode]["dp"]
+            output["{}_f".format(mode)] = information["modes"][mode]["f"]
+
+        output["all_f"] = information["all"]
+        output["T"] = information["settings"]["T"]
+
+        pd.DataFrame(output).to_csv(
+            "{}/boptx_termination.csv".format(output_path), sep = ";", index = None)
+
+    def get_information(self, identifier):
+        settings = { "H": self.H, "S": self.S, "T": self.T }
+        information = { "modes": {}, "all": None, "terminated": False, "settings": settings }
+
+        df_trajectory = self.trajectories[identifier]
         f_all = np.ones((len(df_trajectory),), dtype = bool)
 
         for mode in self.modes:
+            information["modes"][mode] = {}
+
             y = df_trajectory[mode].values
+            information["modes"][mode]["y"] = y
 
             s = np.ones((len(y),)) * np.nan
             s[self.S:-self.S] = [
                 np.sum(y[k - self.S:k + self.S]) / (2 * self.S)
                 for k in range(self.S, len(y) - self.S)]
+            information["modes"][mode]["s"] = s
 
             d = np.ones((len(y),)) * np.nan
             d[self.H:-self.H] = [
                 (s[k + self.H] - s[k - self.H]) / (2 * self.H)
                 for k in range(self.H, len(y) - self.H)]
+            information["modes"][mode]["d"] = d
 
             dm = np.ones((len(y),)) * np.nan
             dm[self.H:] = d[:-self.H]
+            information["modes"][mode]["dm"] = dm
 
             dp = np.ones((len(y),)) * np.nan
             dp[:-self.H] = d[self.H:]
+            information["modes"][mode]["dp"] = dp
 
             f = np.abs(dp) <= self.T
             f &= np.abs(dm) <= self.T
             f &= np.abs(d) <= self.T
+            information["modes"][mode]["f"] = f
 
             f_all &= f
 
-        return np.any(f_all)
+        information["all"] = f_all
+        information["terminated"] = np.any(f_all)
+        return information
+
+    def has_terminated(self, identifier):
+        return self.terminated[identifier]
 
     def clean(self, identifier):
         del self.trajectories[identifier]
@@ -454,13 +500,15 @@ class GlobalModeShareProblem(MATSimProblem):
 
     def process(self, output_path, values, information):
         candidates = glob.glob("{}/*modestats.txt".format(output_path))
+        candidates = [c for c in candidates if not "ph_" in c]
+        candidates = [c for c in candidates if not "pkm_" in c]
         assert len(candidates) == 1
 
         df = pd.read_csv(candidates[0], sep = "\t")
 
         states = np.array([
             df[mode].values[-1] - self.reference[mode]
-            for mode in modes
+            for mode in self.modes
         ])
 
         objective = np.sum(states**2)
