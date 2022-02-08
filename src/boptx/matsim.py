@@ -481,20 +481,22 @@ class ModeShareTracker(TerminationTracker):
 class GlobalModeShareProblem(MATSimProblem):
     def __init__(self, reference, initial):
         self.reference = reference
+        self.reference_modes = list(reference.keys())
+
         self.initial = initial
-        self.modes = list(reference.keys())
+        self.parameter_modes = list(initial.keys())
 
     def get_parameters(self):
         return [
             ContinuousParameter(name = mode, initial_value = self.initial[mode])
-            for mode in self.modes
+            for mode in self.parameter_modes
         ]
 
     def get_state_count(self):
         return len(self.modes)
 
     def parameterize(self, settings, values, information):
-        for mode_index, mode in enumerate(self.modes):
+        for mode_index, mode in enumerate(self.parameter_modes):
             slot = "planCalcScore.scoringParameters[subpopulation=null].modeParams[mode={}].constant".format(mode)
             settings["config"][slot] = values[mode_index]
 
@@ -508,7 +510,7 @@ class GlobalModeShareProblem(MATSimProblem):
 
         states = np.array([
             df[mode].values[-1] - self.reference[mode]
-            for mode in self.modes
+            for mode in self.reference_modes
         ])
 
         objective = np.sum(states**2)

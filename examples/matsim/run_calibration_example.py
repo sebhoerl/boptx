@@ -11,7 +11,7 @@ logging.basicConfig(level = logging.INFO)
 # Define the problem
 problem = GlobalModeShareProblem(
     reference = { "car": 0.31, "pt": 0.18, "bicycle": 0.18, "walk": 0.22 },
-    initial = { "car": 0.0, "pt": 0.0, "bicycle": 0.0, "walk": 0.0 }
+    initial = { "car": 0.0, "pt": 0.0, "bicycle": 0.0 }
 )
 
 # Define the termination tracker
