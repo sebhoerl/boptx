@@ -33,8 +33,9 @@ evaluator = MATSimEvaluator(
     settings = dict(
         class_path = "matsim-berlin/matsim-berlin-5.5.3.jar",
         main_class = "org.matsim.run.RunBerlinScenario",
-        arguments = ["matsim-berlin/scenarios/berlin-v5.5-1pct/input/berlin-v5.5-1pct.config.xml"],
+        vm_arguments = ["-Dmatsim.preferLocalDtds=true"],
         memory = "20g",
+        arguments = ["matsim-berlin/scenarios/berlin-v5.5-1pct/input/berlin-v5.5-1pct.config.xml"],
         transition_size = 50,
         config = {
             "global.numberOfThreads": 8,

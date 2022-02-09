@@ -61,6 +61,7 @@ def create_default_settings(input_settings, input_config = {}):
     settings = {
         "java_binary": "java",
         "arguments": [],
+        "vm_arguments": [],
         "config": input_config
     }
 
@@ -189,6 +190,7 @@ class MATSimEvaluator(BaseEvaluator):
     def _build_command_line(self, settings):
         # Construct command line
         command_line = [settings["java_binary"]]
+        command_line += settings["vm_arguments"]
 
         if "memory" in settings:
             command_line += ["-Xmx{}".format(settings["memory"])]
