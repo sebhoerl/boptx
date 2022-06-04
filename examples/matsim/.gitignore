@@ -1,3 +1,5 @@
 matsim-berlin/
 working_directory/
 .metadata/
+boptx_termination.csv
+calibration.p
