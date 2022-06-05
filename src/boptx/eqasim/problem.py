@@ -1,5 +1,5 @@
 from boptx.problem import Problem, ContinuousParameter
-from matsim import MATSimProblem
+from boptx.matsim import MATSimProblem
 
 import numpy as np
 import pandas as pd
