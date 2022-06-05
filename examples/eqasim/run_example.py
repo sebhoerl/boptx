@@ -64,11 +64,11 @@ from boptx.matsim import MATSimEvaluator
 evaluator = MATSimEvaluator(
     working_directory = "working_directory", # Working directory, which must exist.
     problem = problem,
+    parallelism = 4,
     settings = dict(
         class_path = os.path.realpath("data/ile_de_france-1.3.1.jar"),
         main_class = "org.eqasim.ile_de_france.RunSimulation",
         vm_arguments = ["-Dmatsim.preferLocalDtds=true"],
-        iterations = 400,
         memory = "12g",
         config = {
             "global.numberOfThreads": 8,
