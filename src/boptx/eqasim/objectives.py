@@ -1,8 +1,12 @@
 import pickle
-import mode_analysis, flow_analysis, travel_time_analysis
 import pandas as pd
 import geopandas as gpd
 import numpy as np
+
+
+import boptx.eqasim.mode_analysis as mode_analysis
+import boptx.eqasim.flow_analysis as flow_analysis
+import boptx.eqasil.travel_time_analysis as travel_time_analysis
 
 import logging
 logger = logging.getLogger(__name__)
