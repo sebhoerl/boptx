@@ -75,7 +75,7 @@ evaluator = MATSimEvaluator(
             "qsim.numberOfThreads": 8,
             "linkStats.writeLinkStatsInterval": 0,
             "controler.writeTripsInterval": 0,
-            "controler.lastIteration", 400
+            "controler.lastIteration": 400
         },
         arguments = [
             "--config-path", os.path.realpath("data/pc_config.xml"),
