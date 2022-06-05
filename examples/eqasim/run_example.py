@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, shutil
 
 # Run script updated from convergence branch
 # - data/ile_de_france-1.3.1.jar
