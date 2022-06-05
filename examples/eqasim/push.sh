@@ -7,4 +7,6 @@
 
 #cp /home/shoerl/explo22/egt_pc_trips.csv data
 
-scp -r data bullx:/scratch/sebastian.horl/boptx/examples/eqasim
+#scp -r data bullx:/scratch/sebastian.horl/boptx/examples/eqasim
+
+scp /home/shoerl/code/eqasim-java/ile_de_france/target/ile_de_france-1.3.1.jar bullx:/scratch/sebastian.horl/boptx/examples/eqasim/data

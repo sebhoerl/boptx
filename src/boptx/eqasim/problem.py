@@ -79,7 +79,7 @@ class CalibrationProblem(MATSimProblem):
             parameter.implement(settings, value)
 
     def process(self, output_path, values, information):
-        information = self.objective.calculate(path)
+        information = self.objective.calculate(output_path)
 
         return dict(
             objective = information["objective"],
