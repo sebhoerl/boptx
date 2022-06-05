@@ -6,7 +6,7 @@ import numpy as np
 
 import boptx.eqasim.mode_analysis as mode_analysis
 import boptx.eqasim.flow_analysis as flow_analysis
-import boptx.eqasil.travel_time_analysis as travel_time_analysis
+import boptx.eqasim.travel_time_analysis as travel_time_analysis
 
 import logging
 logger = logging.getLogger(__name__)
