@@ -82,7 +82,7 @@ class SampleProcessAlgorithm(Algorithm):
             if isinstance(sample, tuple):
                 identifiers.append(evaluator.submit([sample[0]], sample[1])[0])
             else:
-                identifiers.append(evaluator.submit([sample])[0])
+                identifiers.append(evaluator.submit([sample], {})[0])
 
         evaluations = evaluator.get(identifiers)
         self.process(evaluations)

@@ -5,7 +5,7 @@ class Evaluator:
     def __init__(self):
         raise NotImplementedError()
 
-    def submit(self, values, information = None):
+    def submit(self, values, information):
         raise NotImplementedError()
 
     def get(self, identifiers):
@@ -14,7 +14,7 @@ class Evaluator:
     def clean(self, identifiers):
         raise NotImplementedError()
 
-    def submit_one(self, values, information = None):
+    def submit_one(self, values, information):
         return self.submit([values], information)[0]
 
     def clean_one(self, identifier):
@@ -69,7 +69,7 @@ class DefaultEvaluator(Evaluator):
     def __init__(self):
         self.evaluations = {}
 
-    def submit(self, values, information = None):
+    def submit(self, values, information):
         identifiers = []
 
         for v in values:
