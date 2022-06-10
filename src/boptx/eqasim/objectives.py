@@ -3,6 +3,8 @@ import pandas as pd
 import geopandas as gpd
 import numpy as np
 
+import scipy.stats as ss
+
 
 import boptx.eqasim.mode_analysis as mode_analysis
 import boptx.eqasim.flow_analysis as flow_analysis
@@ -129,6 +131,14 @@ class FlowObjective(BaseObjective):
             if self.scaling:
                 raise RuntimeError("Standard deviation objective does not make sense in combination with absolute scaling")
 
+        if self.objective.upper() == "KENDALL":
+            if self.relative:
+                raise RuntimeError("Kendall tau objective only makes sense with absolute error")
+
+            if self.scaling:
+                raise RuntimeError("Standard deviation objective does not make sense in combination with absolute scaling")
+
+
     def calculate(self, simulation_path):
         df_simulation = pd.read_csv("{}/eqasim_counts.csv".format(simulation_path), sep = ";")
 
@@ -152,6 +162,8 @@ class FlowObjective(BaseObjective):
 
         if self.objective.upper() == "STD":
             objective = np.std(objective)
+        elif self.objective.upper() == "KENDALL":
+            objective = np.abs(ss.kendalltau(df_valid["reference_flow"].values, df_valid["v"].values) - 1.0)
         else:
             objective = self.calculate_objective_(objective)
 

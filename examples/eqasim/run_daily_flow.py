@@ -21,15 +21,15 @@ if os.path.exists("working_directory"):
 os.mkdir("working_directory")
 
 # Define the objective
-from boptx.eqasim.objectives import ModeShareObjective
-mode_share_objective = ModeShareObjective("data/egt_pc_trips.csv", dict(
-    modes = ["car", "pt", "bike", "walk"],
-    maximum_bin_count = 20
-))
+#from boptx.eqasim.objectives import ModeShareObjective
+#mode_share_objective = ModeShareObjective("data/egt_pc_trips.csv", dict(
+#    modes = ["car", "pt", "bike", "walk"],
+#    maximum_bin_count = 20
+#))
 
-#from boptx.eqasim.objectives import FlowObjective
-#flow_objective = FlowObjective(
-#    "data/daily_flow.csv", minimum_count = 10)
+from boptx.eqasim.objectives import FlowObjective
+flow_objective = FlowObjective(
+    "data/daily_flow.csv", minimum_count = 10)
 
 #from boptx.eqasim.objectives import TravelTimeObjective
 #travel_time_objective = TravelTimeObjective(
@@ -40,19 +40,17 @@ stuck_objective = StuckAgentsObjective()
 
 from boptx.eqasim.objectives import WeightedSumObjective
 sum_objective = WeightedSumObjective()
-sum_objective.add("mode_share", 1.0, mode_share_objective, True)
-#sum_objective.add("flow", 0.0, flow_objective)
-#sum_objective.add("travel_time", 0.0, travel_time_objective)
+sum_objective.add("flow", 1.0, flow_objective)
 sum_objective.add("stuck", 1.0, stuck_objective)
 
 # Define the parameters
-from boptx.eqasim.problem import ModeParameter, CapacityParameter
+from boptx.eqasim.problem import ModeParameter, OsmCapacityParameter
 parameters = [
     ModeParameter("car.alpha_u", initial_value = 0.0),
-    ModeParameter("bike.alpha_u", initial_value = 0.0),
-    ModeParameter("walk.alpha_u", initial_value = 0.0),
-    ModeParameter("car.betaTravelTime_u_min", (-2.0, 0.0), -0.06, 10.0),
-    CapacityParameter()
+    OsmCapacityParameter("major"),
+    OsmCapacityParameter("intermediate"),
+    OsmCapacityParameter("minor"),
+    OsmCapacityParameter("link")
 ]
 
 # Define the calibration problem
@@ -79,7 +77,8 @@ evaluator = MATSimEvaluator(
         },
         arguments = [
             "--config-path", os.path.realpath("data/pc_config.xml"),
-            # "--count-links", os.path.realpath("data/daily_flow.csv"),
+            "--count-links", os.path.realpath("data/daily_flow.csv"),
+            "--use-vdf", "true"
         ]
     )
 )
@@ -98,4 +97,4 @@ loop = Loop(
 
 # Prepare tracking of the calibration
 from boptx.tracker import PickleTracker
-loop.advance(callback = PickleTracker("working_directory/calibration.p"))
+loop.advance(callback = PickleTracker("calibration_daily_flow.p"))
