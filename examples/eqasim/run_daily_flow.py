@@ -69,8 +69,8 @@ evaluator = MATSimEvaluator(
         vm_arguments = ["-Dmatsim.preferLocalDtds=true"],
         memory = "24g",
         config = {
-            "global.numberOfThreads": 8,
-            "qsim.numberOfThreads": 8,
+            "global.numberOfThreads": 12,
+            "qsim.numberOfThreads": 12,
             "linkStats.writeLinkStatsInterval": 0,
             "controler.writeTripsInterval": 0,
             "controler.lastIteration": 400
