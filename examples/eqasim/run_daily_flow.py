@@ -40,13 +40,13 @@ stuck_objective = StuckAgentsObjective()
 
 from boptx.eqasim.objectives import WeightedSumObjective
 sum_objective = WeightedSumObjective()
-sum_objective.add("flow", 1.0, flow_objective)
+sum_objective.add("flow", 0.1, flow_objective)
 sum_objective.add("stuck", 1.0, stuck_objective)
 
 # Define the parameters
 from boptx.eqasim.problem import ModeParameter, OsmCapacityParameter
 parameters = [
-    ModeParameter("car.alpha_u", initial_value = 0.0),
+    ModeParameter("car.alpha_u", initial_value = 0.5816208),
     OsmCapacityParameter("major"),
     OsmCapacityParameter("intermediate"),
     OsmCapacityParameter("minor"),
@@ -78,7 +78,9 @@ evaluator = MATSimEvaluator(
         arguments = [
             "--config-path", os.path.realpath("data/pc_config.xml"),
             "--count-links", os.path.realpath("data/daily_flow.csv"),
-            "--use-vdf", "true"
+            "--mode-choice-parameter:bike.alpha_u", "-1.91059591",
+            "--mode-choice-parameter:walk.alpha_u", "1.4419993",
+            "--mode-choice-parameter:car.betaTravelTime_u_min", "-0.059674772"
         ]
     )
 )
