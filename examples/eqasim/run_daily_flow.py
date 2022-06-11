@@ -67,7 +67,7 @@ evaluator = MATSimEvaluator(
         class_path = os.path.realpath("data/ile_de_france-1.3.1.jar"),
         main_class = "org.eqasim.ile_de_france.RunSimulation",
         vm_arguments = ["-Dmatsim.preferLocalDtds=true"],
-        memory = "12g",
+        memory = "24g",
         config = {
             "global.numberOfThreads": 8,
             "qsim.numberOfThreads": 8,
@@ -76,7 +76,7 @@ evaluator = MATSimEvaluator(
             "controler.lastIteration": 400
         },
         arguments = [
-            "--config-path", os.path.realpath("data/pc_config.xml"),
+            "--config-path", os.path.realpath("data/5pct/pc_config.xml"),
             "--count-links", os.path.realpath("data/daily_flow.csv"),
             "--mode-choice-parameter:bike.alpha_u", "-1.91059591",
             "--mode-choice-parameter:walk.alpha_u", "1.4419993",
