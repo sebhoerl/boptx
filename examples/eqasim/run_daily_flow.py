@@ -29,28 +29,29 @@ os.mkdir("working_directory")
 
 from boptx.eqasim.objectives import FlowObjective
 flow_objective = FlowObjective(
-    "data/daily_flow.csv", minimum_count = 10)
+    "data/daily_flow.csv", minimum_count = 10,
+    relative = False, objective = "L2", scaling = True)
 
 #from boptx.eqasim.objectives import TravelTimeObjective
 #travel_time_objective = TravelTimeObjective(
 #    "data/uber_daily.csv", "data/uber_zones.gpkg", minimum_observations = 10)
 
-from boptx.eqasim.objectives import StuckAgentsObjective, WeightedSumObjective
-stuck_objective = StuckAgentsObjective()
+#from boptx.eqasim.objectives import StuckAgentsObjective, WeightedSumObjective
+#stuck_objective = StuckAgentsObjective()
 
 from boptx.eqasim.objectives import WeightedSumObjective
 sum_objective = WeightedSumObjective()
-sum_objective.add("flow", 0.1, flow_objective)
-sum_objective.add("stuck", 1.0, stuck_objective)
+sum_objective.add("flow", 1.0, flow_objective)
+#sum_objective.add("stuck", 1.0, stuck_objective)
 
 # Define the parameters
 from boptx.eqasim.problem import ModeParameter, OsmCapacityParameter
 parameters = [
     ModeParameter("car.alpha_u", initial_value = 0.5816208),
-    OsmCapacityParameter("major"),
-    OsmCapacityParameter("intermediate"),
-    OsmCapacityParameter("minor"),
-    OsmCapacityParameter("link")
+    OsmSpeedParameter("major"),
+    OsmSpeedParameter("intermediate"),
+    OsmSpeedParameter("minor"),
+    OsmSpeedParameter("link")
 ]
 
 # Define the calibration problem
@@ -76,7 +77,7 @@ evaluator = MATSimEvaluator(
             "controler.lastIteration": 400
         },
         arguments = [
-            "--config-path", os.path.realpath("data/5pct/pc_config.xml"),
+            "--config-path", os.path.realpath("data/1pct/pc_config.xml"),
             "--count-links", os.path.realpath("data/daily_flow.csv"),
             "--mode-choice-parameter:bike.alpha_u", "-1.91059591",
             "--mode-choice-parameter:walk.alpha_u", "1.4419993",
