@@ -13,7 +13,7 @@ import os, sys, shutil
 ### - data/uber_zones.gpkg
 
 import logging
-logging.basicConfig(level = logging.INFO)
+logging.basicConfig(level = logging.INFO, datefmt = "%Y-%m-%d %H:%M:%S")
 
 # Clean up working directory
 if os.path.exists("working_directory"):

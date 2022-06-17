@@ -13,7 +13,7 @@ import os, sys, shutil
 ### - data/uber_zones.gpkg
 
 import logging
-logging.basicConfig(level = logging.INFO)
+logging.basicConfig(level = logging.INFO, datefmt = "%Y-%m-%d %H:%M:%S")
 
 # Clean up working directory
 if os.path.exists("working_directory"):
@@ -45,7 +45,7 @@ sum_objective.add("flow", 1.0, flow_objective)
 #sum_objective.add("stuck", 1.0, stuck_objective)
 
 # Define the parameters
-from boptx.eqasim.problem import ModeParameter, OsmCapacityParameter
+from boptx.eqasim.problem import ModeParameter, OsmCapacityParameter, OsmSpeedParameter
 parameters = [
     ModeParameter("car.alpha_u", initial_value = 0.5816208),
     OsmSpeedParameter("major"),
