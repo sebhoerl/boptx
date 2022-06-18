@@ -1,6 +1,6 @@
 from boptx.matsim import MATSimEvaluator, MATSimProblem, ModeShareTracker, GlobalModeShareProblem
 from boptx.problem import ContinuousParameter
-from boptx.algorithms import CMAES1P1Algorithm
+from boptx.algorithms import CMAES1P1Algorithm, OpdytsAlgorithm
 import time, os, shutil
 import logging
 logging.basicConfig(level = logging.INFO)
@@ -47,6 +47,7 @@ evaluator = MATSimEvaluator(
 
 # Define the algorithm
 algorithm = CMAES1P1Algorithm(problem)
+algorithm = OpdytsAlgorithm(problem, algorithm)
 
 # Prepare the calibration loop
 from boptx.loop import Loop
@@ -59,4 +60,4 @@ loop = Loop(
 
 # Prepare tracking of the calibration
 from boptx.tracker import PickleTracker
-loop.advance(callback = PickleTracker("calibration.p"))
+loop.advance(callback = PickleTracker("calibration_opdyts.p"))
