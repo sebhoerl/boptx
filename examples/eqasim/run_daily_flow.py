@@ -30,7 +30,7 @@ os.mkdir("working_directory")
 from boptx.eqasim.objectives import FlowObjective
 flow_objective = FlowObjective(
     "data/daily_flow.csv", minimum_count = 10,
-    relative = False, objective = "L2", scaling = True)
+    relative = False, objective = "KENDALL", scaling = False)
 
 #from boptx.eqasim.objectives import TravelTimeObjective
 #travel_time_objective = TravelTimeObjective(
@@ -42,7 +42,7 @@ flow_objective = FlowObjective(
 from boptx.eqasim.objectives import WeightedSumObjective
 sum_objective = WeightedSumObjective()
 sum_objective.add("flow", 1.0, flow_objective)
-#sum_objective.add("stuck", 1.0, stuck_objective)
+sum_objective.add("stuck", 1.0, stuck_objective)
 
 # Define the parameters
 from boptx.eqasim.problem import ModeParameter, OsmCapacityParameter, OsmSpeedParameter
