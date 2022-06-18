@@ -495,7 +495,7 @@ class GlobalModeShareProblem(MATSimProblem):
         ]
 
     def get_state_count(self):
-        return len(self.modes)
+        return len(self.reference_modes)
 
     def parameterize(self, settings, values, information):
         for mode_index, mode in enumerate(self.parameter_modes):
