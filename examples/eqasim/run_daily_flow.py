@@ -36,8 +36,8 @@ flow_objective = FlowObjective(
 #travel_time_objective = TravelTimeObjective(
 #    "data/uber_daily.csv", "data/uber_zones.gpkg", minimum_observations = 10)
 
-#from boptx.eqasim.objectives import StuckAgentsObjective, WeightedSumObjective
-#stuck_objective = StuckAgentsObjective()
+from boptx.eqasim.objectives import StuckAgentsObjective, WeightedSumObjective
+stuck_objective = StuckAgentsObjective()
 
 from boptx.eqasim.objectives import WeightedSumObjective
 sum_objective = WeightedSumObjective()
