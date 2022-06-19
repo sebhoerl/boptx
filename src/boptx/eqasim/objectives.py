@@ -163,7 +163,7 @@ class FlowObjective(BaseObjective):
         if self.objective.upper() == "STD":
             objective = np.std(objective)
         elif self.objective.upper() == "KENDALL":
-            objective = (-ss.kendalltau(df_valid["reference_flow"].values, df_valid["simulation_flow"].values) + 1.0) * 0.5
+            objective = (-ss.kendalltau(df_valid["reference_flow"].values, df_valid["simulation_flow"].values).correlation + 1.0) * 0.5
         else:
             objective = self.calculate_objective_(objective)
 
