@@ -114,7 +114,7 @@ class MATSimEvaluator(BaseEvaluator):
                     raise RuntimeError("Need to override plans.inputPlansFile for opdyts, but value is already set")
 
                 # Set input plans
-                plans_path = _get_output_file(opdyts["restart"], "output_plans.xml.gz")
+                plans_path = self._get_output_file(opdyts["restart"], "output_plans.xml.gz")
                 config["plans.inputPlansFile"] = os.path.realpath(plans_path)
 
                 # Find the start iteration
