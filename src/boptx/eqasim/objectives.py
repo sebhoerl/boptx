@@ -138,6 +138,9 @@ class FlowObjective(BaseObjective):
             if self.scaling:
                 raise RuntimeError("Standard deviation objective does not make sense in combination with absolute scaling")
 
+        if self.objective.upper() == "R2":
+            if self.relative:
+                raise RuntimeError("R2 objective only makes sense with absolute error")
 
     def calculate(self, simulation_path):
         df_simulation = pd.read_csv("{}/eqasim_counts.csv".format(simulation_path), sep = ";")
@@ -164,6 +167,11 @@ class FlowObjective(BaseObjective):
             objective = np.std(objective)
         elif self.objective.upper() == "KENDALL":
             objective = (-ss.kendalltau(df_valid["reference_flow"].values, df_valid["simulation_flow"].values).correlation + 1.0) * 0.5
+        elif self.objective.upper() == "R2":
+            SStot = np.sum((df_valid["reference_flow"].values - df_valid["reference_flow"].mean)**2)
+            SSres = np.sum(objective**2)
+            objective = 1 - SSres / SStot
+            objective = 1 - objective
         else:
             objective = self.calculate_objective_(objective)
 

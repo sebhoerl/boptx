@@ -30,7 +30,7 @@ os.mkdir("working_directory")
 from boptx.eqasim.objectives import FlowObjective
 flow_objective = FlowObjective(
     "data/daily_flow.csv", minimum_count = 10,
-    relative = False, objective = "KENDALL", scaling = False)
+    relative = False, objective = "R2", scaling = True)
 
 #from boptx.eqasim.objectives import TravelTimeObjective
 #travel_time_objective = TravelTimeObjective(
