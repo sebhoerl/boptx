@@ -168,7 +168,7 @@ class FlowObjective(BaseObjective):
         elif self.objective.upper() == "KENDALL":
             objective = (-ss.kendalltau(df_valid["reference_flow"].values, df_valid["simulation_flow"].values).correlation + 1.0) * 0.5
         elif self.objective.upper() == "R2":
-            SStot = np.sum((df_valid["reference_flow"].values - df_valid["reference_flow"].mean)**2)
+            SStot = np.sum((df_valid["reference_flow"].values - df_valid["reference_flow"].mean())**2)
             SSres = np.sum(objective**2)
             objective = 1 - SSres / SStot
             objective = 1 - objective
