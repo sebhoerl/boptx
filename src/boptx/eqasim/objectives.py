@@ -144,12 +144,18 @@ class FlowObjective(BaseObjective):
                 raise RuntimeError("R2 objective only makes sense with absolute error")
 
     def calculate(self, simulation_path):
-        df_simulation = pd.read_csv("{}/eqasim_counts.csv".format(simulation_path), sep = ";")
+        df_simulation = pd.read_csv("{}/eqasim_counts.csv".format(simulation_path), sep = ";")[[
+            "link_id", "hour", "count", "osm", "lanes"
+        ]]
 
         if not self.is_hourly:
-            df_simulation = df_simulation[[
-                "link_id", "count", "osm", "lanes"
-            ]].groupby(["link_id"]).sum().reset_index()
+            df_simulation = pd.merge(
+                df_simulation.drop_duplicates("link_id"),
+                df_simulation[["link_id", "count"]].groupby("link_id").sum().reset_index(),
+                on = "link_id", how = "left"
+            )
+
+            df_simulation["count"] = df_simulation["count"].fillna(0)
 
         df_difference, scaling_factor = flow_analysis.calculate_difference(self.df_reference, df_simulation, minimum_count = self.minimum_count, tags = self.tags)
         df_valid = df_difference[df_difference["valid"]]

@@ -24,7 +24,7 @@ def calculate_difference(df_reference, df_simulation, factor = 1.0, minimum_coun
     })
 
     df = pd.merge(
-        df_reference[columns + ["reference_flow"]],
+        df_reference[columns + ["reference_flow", "score"]],
         df_simulation[columns + ["simulation_flow", "osm", "lanes"]],
         on = columns, how = "left"
     )
