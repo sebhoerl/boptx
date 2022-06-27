@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import scipy.optimize as opt
 
-def calculate_difference(df_reference, df_simulation, factor = 1.0, minimum_count = 0.0):
+def calculate_difference(df_reference, df_simulation, factor = 1.0, minimum_count = 0.0, tags = None):
     columns = ["link_id"]
 
     if "hour" in df_reference:
@@ -25,16 +25,20 @@ def calculate_difference(df_reference, df_simulation, factor = 1.0, minimum_coun
 
     df = pd.merge(
         df_reference[columns + ["reference_flow"]],
-        df_simulation[columns + ["simulation_flow"]],
+        df_simulation[columns + ["simulation_flow", "osm", "lanes"]],
         on = columns, how = "left"
     )
 
     df["simulation_flow"] = df["simulation_flow"].fillna(0.0)
-
-    df["valid"] = df["simulation_flow"] >= minimum_count
     df["simulation_flow"] *= factor
-
     df["difference"] = df["simulation_flow"] - df["reference_flow"]
+
+    df["valid"] = True
+
+    if not tags is None:
+        df["valid"] &= df["osm"].isin(tags)
+
+    df["valid"] &= df["simulation_flow"] >= minimum_count
 
     # Scaling
     problem = ScalingProblem(

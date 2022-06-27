@@ -112,7 +112,7 @@ class ModeShareObjective(BaseObjective):
         ])
 
 class FlowObjective(BaseObjective):
-    def __init__(self, reference_path, relative_threshold = 0.0, relative = True, objective = "L1", scaling = False, minimum_count = 0):
+    def __init__(self, reference_path, relative_threshold = 0.0, relative = True, objective = "L1", scaling = False, minimum_count = 0, tags = None):
         super().__init__(objective)
 
         self.objective = objective
@@ -120,6 +120,7 @@ class FlowObjective(BaseObjective):
         self.relative = relative
         self.scaling = scaling
         self.minimum_count = minimum_count
+        self.tags = tags
 
         self.df_reference = pd.read_csv(reference_path, sep = ";")
         self.is_hourly = "hour" in self.df_reference
@@ -147,10 +148,10 @@ class FlowObjective(BaseObjective):
 
         if not self.is_hourly:
             df_simulation = df_simulation[[
-                "link_id", "count"
+                "link_id", "count", "osm", "lanes"
             ]].groupby(["link_id"]).sum().reset_index()
 
-        df_difference, scaling_factor = flow_analysis.calculate_difference(self.df_reference, df_simulation, minimum_count = self.minimum_count)
+        df_difference, scaling_factor = flow_analysis.calculate_difference(self.df_reference, df_simulation, minimum_count = self.minimum_count, tags = self.tags)
         df_valid = df_difference[df_difference["valid"]]
 
         objective = np.abs(df_valid["scaled_difference" if self.scaling else "difference"].values)

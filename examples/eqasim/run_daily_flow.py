@@ -30,7 +30,8 @@ os.mkdir("working_directory")
 from boptx.eqasim.objectives import FlowObjective
 flow_objective = FlowObjective(
     "data/daily_flow.csv", minimum_count = 10,
-    relative = False, objective = "R2", scaling = True)
+    relative = False, objective = "R2", scaling = True,
+    tags = ["motorway", "trunk", "primary", "secondary", "tertiary"])
 
 #from boptx.eqasim.objectives import TravelTimeObjective
 #travel_time_objective = TravelTimeObjective(
@@ -77,7 +78,7 @@ evaluator = MATSimEvaluator(
             "controler.lastIteration": 400
         },
         arguments = [
-            "--config-path", os.path.realpath("data/1pct/pc_config.xml"),
+            "--config-path", os.path.realpath("data/5pct/pc_config.xml"),
             "--count-links", os.path.realpath("data/daily_flow.csv"),
             "--mode-choice-parameter:bike.alpha_u", "-1.91059591",
             "--mode-choice-parameter:walk.alpha_u", "1.4419993",
