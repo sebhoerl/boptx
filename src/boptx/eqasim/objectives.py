@@ -150,7 +150,7 @@ class FlowObjective(BaseObjective):
 
         if not self.is_hourly:
             df_simulation = pd.merge(
-                df_simulation.drop_duplicates("link_id"),
+                df_simulation.drop_duplicates("link_id")[["link_id", "osm", "lanes"]],
                 df_simulation[["link_id", "count"]].groupby("link_id").sum().reset_index(),
                 on = "link_id", how = "left"
             )
