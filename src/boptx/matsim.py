@@ -510,14 +510,14 @@ class GlobalModeShareProblem(MATSimProblem):
 
         df = pd.read_csv(candidates[0], sep = "\t")
 
-        states = np.array([
+        state = np.array([
             df[mode].values[-1] - self.reference[mode]
             for mode in self.reference_modes
         ])
 
-        objective = np.sum(states**2)
+        objective = np.sum(state**2)
 
         return dict(
             objective = objective,
-            states = states
+            state = state
         )
