@@ -3,7 +3,7 @@ from boptx.problem import ContinuousParameter
 from boptx.algorithms import CMAES1P1Algorithm, OpdytsAlgorithm
 import time, os, shutil
 import logging
-logging.basicConfig(level = logging.DEBUG)
+logging.basicConfig(level = logging.DEBUG, datefmt = "%Y-%m-%d %H:%M:%S")
 
 # git clone https://github.com/matsim-scenarios/matsim-berlin
 # ./mvnw clean package -DskipTests=true
