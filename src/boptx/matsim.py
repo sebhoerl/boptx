@@ -89,10 +89,6 @@ class MATSimEvaluator(BaseEvaluator):
         # Enrich opdyts information
         information = copy.deepcopy(information)
 
-        if "opdyts" in information and "restart" in information["opdyts"]:
-            restart_path = "%s/%s" % (self.working_directory, information["opdyts"]["restart"])
-            information["opdyts"]["restart_path"] = restart_path
-
         # Parametrize
         settings = copy.deepcopy(self.settings)
         self.problem.parameterize(settings, values, information)
@@ -127,7 +123,7 @@ class MATSimEvaluator(BaseEvaluator):
                 last_iteration = 0
 
         # Handle termination criterion
-        if not self.termination is None:
+        if not self.termination is None and not "opdyts" in information:
             if not "transition_size" in settings:
                 raise RuntimeError("The transition size must be given when using a termination criterion")
 
@@ -181,7 +177,8 @@ class MATSimEvaluator(BaseEvaluator):
             "values": values,
             "information": information,
             "settings": settings,
-            "iteration": None
+            "iteration": None,
+            "transitional": False
         }
 
         if not self.termination is None:
@@ -313,7 +310,10 @@ class MATSimEvaluator(BaseEvaluator):
                         if not information is None:
                             simulation["information"]["termination"] = information
 
-                        if not self.termination.has_terminated(identifier):
+                        has_terminated = self.termination.has_terminated(identifier)
+                        simulation["transitional"] = not has_terminated
+
+                        if not has_terminated and not "opdyts" in simulation["information"]:
                             has_finished = False
                             self._advance(identifier)
 
@@ -367,7 +367,7 @@ class MATSimEvaluator(BaseEvaluator):
             information = information,
             objective = response["objective"],
             state = response["state"] if "state" in response else [],
-            transitional = response["transitional"] if "transitional" in response else False
+            transitional = simulation["transitional"]
         )
 
 class ModeShareTracker(TerminationTracker):
