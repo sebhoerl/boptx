@@ -1,6 +1,6 @@
 from boptx.matsim import MATSimEvaluator, MATSimProblem, ModeShareTracker, GlobalModeShareProblem
 from boptx.problem import ContinuousParameter
-from boptx.algorithms import CMAES1P1Algorithm, OpdytsAlgorithm
+from boptx.algorithms import CMAESAlgorithm, OpdytsAlgorithm
 import time, os, shutil
 import logging
 logging.basicConfig(level = logging.DEBUG, datefmt = "%Y-%m-%d %H:%M:%S")
@@ -46,7 +46,7 @@ evaluator = MATSimEvaluator(
 )
 
 # Define the algorithm
-algorithm = CMAES1P1Algorithm(problem)
+algorithm = CMAESAlgorithm(problem)
 algorithm = OpdytsAlgorithm(problem, algorithm)
 
 # Prepare the calibration loop
