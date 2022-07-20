@@ -9,7 +9,7 @@ import multiprocessing
 import pandas as pd
 import numpy as np
 import glob
-import json, pickle
+import json, pickle, copy
 
 import logging
 logger = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ class MATSimEvaluation(DefaultEvaluation, OpdytsEvaluation):
         return self.transitional
 
 class TerminationTracker:
-    def start(self, identifier, values, information):
+    def start(self, identifier, values, information, restart = None):
         raise NotImplementedError()
 
     def update(self, identifier, output_path):
@@ -97,6 +97,7 @@ class MATSimEvaluator(BaseEvaluator):
         # Handle opdyts information
         first_iteration = None
         last_iteration = None
+        restart_identifier = None
 
         if "opdyts" in information:
             if not "transition_size" in settings:
@@ -117,6 +118,8 @@ class MATSimEvaluator(BaseEvaluator):
                 iterations = self._get_iterations(opdyts["restart"])
                 first_iteration = iterations["current"]
                 last_iteration = first_iteration + transition_size
+
+                restart_identifier = opdyts["restart"]
 
             else: # We do not restart a simulation, so we only perform one iteration
                 first_iteration = 0
@@ -182,7 +185,7 @@ class MATSimEvaluator(BaseEvaluator):
         }
 
         if not self.termination is None:
-            self.termination.start(identifier, values, information)
+            self.termination.start(identifier, values, information, restart = restart_identifier)
 
     def _build_command_line(self, settings):
         # Construct command line
@@ -380,9 +383,12 @@ class ModeShareTracker(TerminationTracker):
         self.trajectories = {}
         self.terminated = {}
 
-    def start(self, identifier, values, information):
+    def start(self, identifier, values, information, restart = None):
         self.trajectories[identifier] = None
         self.terminated[identifier] = False
+
+        if not restart is None:
+            self.trajectories[identifier] = copy.deepcopy(self.trajectories[restart])
 
     def update(self, identifier, output_path):
         # Read mode shares
