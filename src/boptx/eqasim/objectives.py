@@ -122,7 +122,7 @@ class GlobalModeShareObjective(BaseObjective):
 
     def calculate(self, simulation_path):
         # Prepare reference shares
-        reference_modes = sorted(self.refence.keys())
+        reference_modes = sorted(self.reference.keys())
         reference = np.array([self.reference[mode] for mode in reference_modes])
 
         # Read simulation shares
