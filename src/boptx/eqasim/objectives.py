@@ -111,6 +111,51 @@ class ModeShareObjective(BaseObjective):
             for mode in self.bounds[0].values()
         ])
 
+
+class GlobalModeShareObjective(BaseObjective):
+    def __init__(self, reference = {}, threshold = 0.0, objective = "L1"):
+        super().__init__(objective)
+
+        self.reference = reference
+        self.objective = objective
+        self.threshold = threshold
+
+    def calculate(self, simulation_path):
+        # Prepare reference shares
+        reference_modes = sorted(self.refence.keys())
+        reference = np.array([self.reference[mode] for mode in reference_modes])
+
+        # Read simulation shares
+        df_simulation = pd.read_csv("{}/eqasim_trips.csv".format(simulation_path), sep = ";")
+        simulation_modes = df_simulation["mode"].unique()
+        simulation = np.array([
+            np.count_nonzero(df_simulation["mode"] == mode) for mode in simulation_modes])
+        simulation = simulation / np.sum(reference)
+
+        # Select simulation shares
+        simulation = np.array([
+            simulation[simulation_modes.index(mode)]
+            if simulation_modes.index(mode) >= 0 else 0.0
+            for mode in reference_modes
+        ])
+
+        states = np.abs(reference - simulation)
+        objective = np.maximum(0.0, states - self.threshold)
+        objective = self.calculate_objective_(objective)
+
+        return {
+            "objective": objective,
+            "type": "global_mode_share",
+            "configuration": {
+                "threshold": self.threshold,
+                "reference": self.reference
+            },
+            "states": states
+        }
+
+    def get_state_count(self):
+        return len(self.reference)
+
 class FlowObjective(BaseObjective):
     def __init__(self, reference_path, relative_threshold = 0.0, relative = True, objective = "L1", scaling = False, minimum_count = 0, tags = None):
         super().__init__(objective)
