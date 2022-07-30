@@ -130,7 +130,7 @@ class GlobalModeShareObjective(BaseObjective):
         simulation_modes = list(df_simulation["mode"].unique())
         simulation = np.array([
             np.count_nonzero(df_simulation["mode"] == mode) for mode in simulation_modes])
-        simulation = simulation / np.sum(reference)
+        simulation = simulation / np.sum(simulation)
 
         # Select simulation shares
         simulation = np.array([
