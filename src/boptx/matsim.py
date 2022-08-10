@@ -185,7 +185,14 @@ class MATSimEvaluator(BaseEvaluator):
         }
 
         if not self.termination is None:
-            self.termination.start(identifier, values, information, restart = restart_identifier)
+            termination_restart = restart_identifier
+
+            if "opdyts" in information:
+                if "restart_convergence" in information["opdyts"]:
+                    if not information["opdyts"]["restart_convergence"]:
+                        termination_restart = None
+
+            self.termination.start(identifier, values, information, restart = termination_restart)
 
     def _build_command_line(self, settings):
         # Construct command line

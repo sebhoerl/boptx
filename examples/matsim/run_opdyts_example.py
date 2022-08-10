@@ -59,7 +59,7 @@ from boptx.loop import Loop
 loop = Loop(
     algorithm = algorithm,
     evaluator = evaluator,
-    maximum_evaluations = 100,
+    maximum_evaluations = 10000,
 )
 
 # Prepare tracking of the calibration

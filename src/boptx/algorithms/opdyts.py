@@ -120,7 +120,8 @@ class OpdytsAlgorithm(Algorithm):
             evaluator.submit_one(values[k], self._combine(dict(opdyts = dict(
                 type = OpdytsEvaluation.CANDIDATE,
                 candidate = k, iteration = self.iteration,
-                restart = self.base_identifier
+                restart = self.base_identifier,
+                restart_convergence = False
             )), information[k])) for k in range(candidates)
         ]
 
@@ -171,7 +172,8 @@ class OpdytsAlgorithm(Algorithm):
                 transient_performance = transient_performance,
                 equilibrium_gap = equilibrium_gap,
                 uniformity_gap = uniformity_gap,
-                restart = identifiers[k]
+                restart = identifiers[k],
+                transition = transitions[k]
             )), information[k]))
 
             # Get information and clean up
