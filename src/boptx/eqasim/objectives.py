@@ -148,7 +148,8 @@ class GlobalModeShareObjective(BaseObjective):
             "type": "global_mode_share",
             "configuration": {
                 "threshold": self.threshold,
-                "reference": self.reference
+                "reference": self.reference,
+                "simulation": simulation
             },
             "states": states
         }
