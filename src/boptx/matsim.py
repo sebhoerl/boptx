@@ -396,6 +396,7 @@ class ModeShareTracker(TerminationTracker):
         self.terminated[identifier] = False
 
         if not restart is None:
+            print("   FOUND {}".format(len(self.trajectories[restart])))
             self.trajectories[identifier] = copy.deepcopy(self.trajectories[restart])
 
     def update(self, identifier, output_path):
