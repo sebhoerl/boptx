@@ -128,14 +128,15 @@ class GlobalModeShareObjective(BaseObjective):
         # Read simulation shares
         df_simulation = pd.read_csv("{}/eqasim_trips.csv".format(simulation_path), sep = ";")
         simulation_modes = list(df_simulation["mode"].unique())
-        simulation = np.array([
-            np.count_nonzero(df_simulation["mode"] == mode) for mode in simulation_modes])
-        simulation = simulation / np.sum(simulation)
+        simulation = {
+            mode : np.count_nonzero(df_simulation["mode"] == mode) / len(df_simulation)
+            for mode in simulation_modes
+        }
 
         # Select simulation shares
         simulation = np.array([
-            simulation[simulation_modes.index(mode)]
-            if simulation_modes.index(mode) >= 0 else 0.0
+            simulation[mode]
+            if mode in simulation else 0.0
             for mode in reference_modes
         ])
 
