@@ -173,6 +173,7 @@ class OpdytsAlgorithm(Algorithm):
                 equilibrium_gap = equilibrium_gap,
                 uniformity_gap = uniformity_gap,
                 restart = identifiers[k],
+                restart_convergence = True,
                 transition = transitions[k]
             )), information[k]))
 

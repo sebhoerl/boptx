@@ -391,6 +391,7 @@ class ModeShareTracker(TerminationTracker):
         self.terminated = {}
 
     def start(self, identifier, values, information, restart = None):
+        print("TERMINATION: Start {} based on {}".format(identifier, restart))
         self.trajectories[identifier] = None
         self.terminated[identifier] = False
 
